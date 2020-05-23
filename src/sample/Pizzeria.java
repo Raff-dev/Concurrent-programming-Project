@@ -5,16 +5,14 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static sample.Settings.newCustomersTime;
+import static sample.Settings.*;
 
 public class Pizzeria extends Pane {
 
     private final Owner owner = new Owner(this);
-    private ArrayList<CustomerGroup> customerGroups = new ArrayList<>();
-    private ArrayList<Table> tables = new ArrayList<>();
+    private final ArrayList<Table> tables = new ArrayList<>();
     private int[] tablesSeatCounts;
     private boolean isRunning = true;
-    private Random random = new Random();
     private int differentTablesCount = 4;
     private int customerGroupCounter = 0;
 
@@ -37,13 +35,15 @@ public class Pizzeria extends Pane {
 
     private void generateCustomers() {
         while (isRunning) {
-            customerGroupCounter++;
-            int customersCount = random.nextInt(3) + 1;
-            CustomerGroup customerGroup = new CustomerGroup(this, owner,customersCount, customerGroupCounter);
-            customerGroups.add(customerGroup);
-            customerGroup.start();
+            int numWaiting = owner.getNumWaiting();
+            if (numWaiting < Settings.maxNumWaiting) {
+                customerGroupCounter++;
+                int customersCount = getRandom().nextInt(3) + 1;
+                CustomerGroup customerGroup = new CustomerGroup(this, owner, customersCount, customerGroupCounter);
+                customerGroup.start();
+            } else System.out.println("Max number of waiting customers reached: " + numWaiting);
             try {
-                Thread.sleep(random.nextInt(1000) + newCustomersTime);
+                Thread.sleep(getRandom().nextInt(newCustomersTimeVariation) + newCustomersTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
