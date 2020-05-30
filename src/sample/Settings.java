@@ -13,14 +13,16 @@ public class Settings extends Pane {
     public static final int HEIGHT = 800;
     public static float scale = 1;
     public static float timeScale = 1;
+    public static float floatieSize =25;
 
+    public static int[] seatsSetting = new int[]{3, 2, 2, 2};
     public static float customerSize = 20;
     public static float tableSize = 50;
     public static float tableSpacing = 100;
     public static int queueSpacing = 100;
 
     public static int newCustomersTimeVariation = (int) (100 * timeScale);
-    public static long newCustomersTime = (long) (300 * timeScale);
+    public static long newCustomersTime = (long) (100 * timeScale);
     public static long eatingTime = (long) (3000 * timeScale);
     public static int maxNumWaiting = 5;
 
@@ -63,11 +65,11 @@ public class Settings extends Pane {
             Color.rgb(54, 140, 178)
     ));
 
-    static Color getRandomColor() {
+    public static Color getRandomColor() {
         return colors.get(random.nextInt(colors.size()));
     }
 
-    static Random getRandom() {
+    public static Random getRandom() {
         return random;
     }
 

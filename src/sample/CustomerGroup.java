@@ -36,8 +36,10 @@ public class CustomerGroup extends Thread {
 
     private void visualise() {
         color = getRandomColor();
-        group = new Rectangle(20 * numCustomers, 20);
+        group = new Rectangle(customerSize * numCustomers, customerSize);
         group.setFill(color);
+
+
 
         IntStream.range(0, numCustomers).forEach(i -> {
             Rectangle r = new Rectangle(getCustomerSize(), getCustomerSize());
@@ -48,8 +50,11 @@ public class CustomerGroup extends Thread {
         Text text = new Text(id + "|" + numCustomers);
         text.setFont(Font.font(10));
 
-        Platform.runLater(() -> visualisation.getChildren().add(group));
-        Platform.runLater(() -> visualisation.getChildren().add(text));
+        Platform.runLater(() -> {
+            visualisation.setTranslateY(HEIGHT - 50);
+            visualisation.getChildren().add(group);
+            visualisation.getChildren().add(text);
+        });
     }
 
     @Override
@@ -73,24 +78,27 @@ public class CustomerGroup extends Thread {
     }
 
     void joinTable(Table table) {
-        Platform.runLater(() -> visualisation.getChildren().remove(group));
-        Platform.runLater(() -> visualisation.setTranslateX(table.getX()));
-        Platform.runLater(() -> visualisation.setTranslateY(table.getY()));
+        Platform.runLater(() -> {
+            visualisation.getChildren().remove(group);
+            visualisation.setTranslateX(table.getX());
+            visualisation.setTranslateY(table.getY());
+        });
         this.occupiedSeats = table.joinTable(numCustomers);
         int counter = 0;
         for (int index = 0; index < occupiedSeats.length; index++) {
             if (occupiedSeats[index] == 1) {
                 Rectangle customer = customers.get(counter);
                 int finalIndex = index;
-                Platform.runLater(() -> customer.setTranslateX(table.getSeatX(finalIndex)));
-                Platform.runLater(() -> customer.setTranslateY(table.getSeatY(finalIndex)));
-                Platform.runLater(() -> visualisation.getChildren().add(customer));
+                Platform.runLater(() -> {
+                    customer.setTranslateX(table.getSeatX(finalIndex));
+                    customer.setTranslateY(table.getSeatY(finalIndex));
+                    visualisation.getChildren().add(customer);
+                });
                 counter++;
             }
         }
         this.table = table;
     }
-
 
     private void eatPizza() {
 //        System.out.println("Customer Group: " + id + " size: " + numCustomers + " found " + table.identify());
@@ -101,9 +109,11 @@ public class CustomerGroup extends Thread {
         }
     }
 
-    private void leaveTable() {
+    void leaveTable() {
+        if (table == null) return;
 //        System.out.println("Customer Group: " + customerGroupCounter +" size: "+customersCount+ " left " + table.identify());
         table.leaveTable(numCustomers, occupiedSeats);
+        table = null;
         Platform.runLater(() -> pizzeria.getChildren().remove(visualisation));
     }
 
@@ -115,13 +125,4 @@ public class CustomerGroup extends Thread {
     public int getNumCustomers() {
         return numCustomers;
     }
-
-    void onScaleChange() {
-
-    }
-
-    public String identify() {
-        return "C-" + id + "|" + numCustomers;
-    }
-
 }

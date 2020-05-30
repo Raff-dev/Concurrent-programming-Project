@@ -1,19 +1,25 @@
 package sample;
 
+import Menu.Menu;
+import Menu.InputHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+
 import static sample.Settings.*;
+import Menu.SoundHandler;
 
-public class Main extends Application {
-
-    public static final Pizzeria pizzeria = new Pizzeria(new int[]{2, 1, 3, 2});
-    public static final Settings sideBar = new Settings();
-    private static final Pane window = new Pane(pizzeria, sideBar);
+public class Launcher extends Application {
+    public static final Pizzeria pizzeria = new Pizzeria(seatsSetting);
+    public static final Menu menu = new Menu();
+    private static final Pane window = new Pane(pizzeria, menu);
     public static final Scene scene = new Scene(window, WIDTH, HEIGHT);
+    public static final InputHandler inputHandler = new InputHandler();
+    public static final SoundHandler soundHandler = new SoundHandler();
+
 
     @Override
     public void start(Stage stage) {
@@ -23,8 +29,9 @@ public class Main extends Application {
             Platform.exit();
             System.exit(0);
         });
+        menu.init();
+        new Thread(pizzeria).start();
         stage.show();
-        pizzeria.startWorking();
     }
 
     public static void main(String[] args) {

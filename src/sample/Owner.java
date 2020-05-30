@@ -1,6 +1,11 @@
 package sample;
 
+import Menu.Menu;
+
 import java.util.ArrayList;
+
+import static Menu.Menu.Mode.RUNNING;
+import static sample.Launcher.menu;
 
 public class Owner extends Thread {
     /*
@@ -13,7 +18,6 @@ public class Owner extends Thread {
     private Pizzeria pizzeria;
     private final ArrayList<CustomerGroup> awaitingCustomers = new ArrayList<>();
     private volatile int numWaiting = 0;
-    private int lastNumThreads = 0;
 
     private Assignment optimal = (g, t) -> t.isOptimal(g.getNumCustomers());
     private Assignment possible = (g, t) -> t.canHaveASeat(g.getNumCustomers());
@@ -25,9 +29,16 @@ public class Owner extends Thread {
 
     @Override
     public void run() {
-        while (pizzeria.isRunning()) checkQueue();
+        while (true) {
+            if (menu.getMode() == RUNNING) checkQueue();
+            else if (awaitingCustomers.size()>0) {
+                awaitingCustomers.forEach(Thread::interrupt);
+                awaitingCustomers.clear();
+                numWaiting = 0;
+            }
+            awaitingCustomers.forEach(customerGroup -> System.out.println("chuj"));
+        }
     }
-
 
     void checkQueue() {
         ArrayList<Table> tables = pizzeria.getTables();
@@ -60,11 +71,6 @@ public class Owner extends Thread {
             if (updateVisualisation) awaitingCustomers.forEach(group ->
                     group.moveInQueue(awaitingCustomers.indexOf(group)));
         }
-    }
-
-    void moveQueue(int index) {
-        // move customers with index greater than
-
     }
 
     void queueCustomerGroup(CustomerGroup customerGroup) {

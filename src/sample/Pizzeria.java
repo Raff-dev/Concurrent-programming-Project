@@ -1,18 +1,20 @@
 package sample;
 
+import Menu.Menu;
+import Menu.Menu.Mode;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+import static Menu.Menu.Mode.*;
+import static sample.Launcher.menu;
 import static sample.Settings.*;
 
-public class Pizzeria extends Pane {
+public class Pizzeria extends Pane implements Runnable {
 
-    private final Owner owner = new Owner(this);
+    private Owner owner;
     private final ArrayList<Table> tables = new ArrayList<>();
     private int[] tablesSeatCounts;
-    private boolean isRunning = true;
     private int differentTablesCount = 4;
     private int customerGroupCounter = 0;
 
@@ -21,10 +23,28 @@ public class Pizzeria extends Pane {
         this.tablesSeatCounts = tablesSeatCounts;
     }
 
-    void startWorking() {
+
+    @Override
+    public void run() {
+
+    }
+
+    public void resume() {
+    }
+
+    public void pause() {
+    }
+
+    public void init() {
         generateTables();
+        owner = new Owner(this);
         owner.start();
-        new Thread(this::generateCustomers).start();
+    }
+
+
+    public void startWorking() {
+        if (owner == null) init();
+        generateCustomers();
     }
 
     private void generateTables() {
@@ -34,7 +54,9 @@ public class Pizzeria extends Pane {
     }
 
     private void generateCustomers() {
-        while (isRunning) {
+        while (true) {
+            Mode mode = menu.getMode();
+            if (mode == START || mode == PAUSE) return;
             int numWaiting = owner.getNumWaiting();
             if (numWaiting < Settings.maxNumWaiting) {
                 customerGroupCounter++;
@@ -48,10 +70,6 @@ public class Pizzeria extends Pane {
                 e.printStackTrace();
             }
         }
-    }
-
-    public boolean isRunning() {
-        return isRunning;
     }
 
     public ArrayList<Table> getTables() {

@@ -1,16 +1,13 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Pair;
-
-import java.util.Arrays;
 
 import static sample.Settings.*;
-
 
 public class Table extends StackPane {
     private int seatCount;
@@ -38,9 +35,11 @@ public class Table extends StackPane {
         Rectangle rect = new Rectangle(getTableSize(), getTableSize());
         rect.setFill(Color.BLACK);
 
-        getChildren().add(rect);
-        getChildren().add(text);
-        Main.pizzeria.getChildren().add(this);
+        Platform.runLater(() -> {
+            getChildren().add(rect);
+            getChildren().add(text);
+            Launcher.pizzeria.getChildren().add(this);
+        });
     }
 
     int[] joinTable(int customersCount) {
@@ -62,8 +61,6 @@ public class Table extends StackPane {
                     customersCount--;
                 }
             }
-            if (seatCount == 4)
-                System.out.println(Arrays.toString(seats) + " | " + Arrays.toString(emptySeats));
             return emptySeats;
         }
     }
