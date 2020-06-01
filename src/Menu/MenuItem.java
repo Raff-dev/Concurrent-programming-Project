@@ -8,20 +8,41 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import static Menu.Menu.*;
 import static javafx.scene.paint.Color.CADETBLUE;
 import static javafx.scene.paint.Color.WHITE;
-import static sample.Settings.*;
+import static Mechanism.Settings.*;
 
-public class MenuItem extends StackPane implements Task {
-    Menu.ButtonName name;
-    private Task task;
+public class MenuItem extends StackPane {
+    private final long initialValue;
+    private ButtonName buttonName;
+    private String name;
+    private Task primaryTask;
+    private Task secondaryTask;
+    private boolean isDual = false;
     private Text text = new Text();
     private Rectangle bg = new Rectangle();
 
-    public MenuItem(Menu.ButtonName name, Task task) {
-        this.name = name;
-        this.task = task;
-        text.setText(String.valueOf(name).replace("_", " "));
+    public MenuItem(ButtonName name, Task task) {
+        this.buttonName = name;
+        this.primaryTask = task;
+        this.secondaryTask = task;
+        this.initialValue = 0;
+        this.name = String.valueOf(name).replace("_", " ");
+        this.text.setText(this.name);
+        setDefault();
+        setTranslateX(WIDTH);
+        getChildren().addAll(bg, text);
+    }
+
+    public MenuItem(ButtonName name, long initialValue, Task primaryTask, Task secondaryTask) {
+        this.buttonName = name;
+        this.primaryTask = primaryTask;
+        this.secondaryTask = secondaryTask;
+        this.initialValue = initialValue;
+        this.isDual = true;
+        this.name = String.valueOf(name).replace("_", " ");
+        updateValueText(initialValue);
         setDefault();
         setTranslateX(WIDTH);
         getChildren().addAll(bg, text);
@@ -52,12 +73,24 @@ public class MenuItem extends StackPane implements Task {
         ft.play();
     }
 
-    void setText(String text) {
+    public ButtonName getButtonName() {
+        return buttonName;
+    }
+
+    public void setText(String text) {
         this.text.setText(text);
     }
 
-    @Override
-    public void execute() {
-        task.execute();
+    public void updateValueText(long value) {
+        this.text.setText(this.buttonName + ": " + value);
+    }
+
+    boolean isDual() {
+        return isDual;
+    }
+
+    public void execute(boolean primary) {
+        if (primary) primaryTask.execute();
+        else secondaryTask.execute();
     }
 }
