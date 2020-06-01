@@ -1,4 +1,4 @@
-package sample;
+package Mechanism;
 
 import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-import static sample.Settings.*;
+import static Mechanism.Settings.*;
 
 public class CustomerGroup extends Thread {
     private Pizzeria pizzeria;
@@ -39,8 +39,6 @@ public class CustomerGroup extends Thread {
         group = new Rectangle(customerSize * numCustomers, customerSize);
         group.setFill(color);
 
-
-
         IntStream.range(0, numCustomers).forEach(i -> {
             Rectangle r = new Rectangle(getCustomerSize(), getCustomerSize());
             r.setFill(color);
@@ -53,7 +51,7 @@ public class CustomerGroup extends Thread {
         Platform.runLater(() -> {
             visualisation.setTranslateY(HEIGHT - 50);
             visualisation.getChildren().add(group);
-            visualisation.getChildren().add(text);
+                visualisation.getChildren().add(text);
         });
     }
 
@@ -110,7 +108,7 @@ public class CustomerGroup extends Thread {
     }
 
     void leaveTable() {
-        if (table == null) return;
+        if (table == null) throw new AssertionError("table null while leving");
 //        System.out.println("Customer Group: " + customerGroupCounter +" size: "+customersCount+ " left " + table.identify());
         table.leaveTable(numCustomers, occupiedSeats);
         table = null;

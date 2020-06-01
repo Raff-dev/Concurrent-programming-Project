@@ -1,5 +1,6 @@
-package sample;
+package Mechanism;
 
+import Menu.Launcher;
 import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -7,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import static sample.Settings.*;
+import static Mechanism.Settings.*;
 
 public class Table extends StackPane {
     private int seatCount;
@@ -50,8 +51,8 @@ public class Table extends StackPane {
             if (seatCount - occupiedCount < customersCount)
                 throw new AssertionError("too many joined the table");
             occupiedCount += customersCount;
-            text.setText(occupiedCount + "/" + seatCount + "|" + groupSize);
-
+            ///////////////////////
+            Platform.runLater(() -> text.setText(occupiedCount + "/" + seatCount + "|" + groupSize));
             int[] emptySeats = new int[]{0, 0, 0, 0};
             for (int index = 0; index < seats.length; index++) {
                 if (customersCount == 0) break;
@@ -71,7 +72,7 @@ public class Table extends StackPane {
             if (occupiedCount < 0)
                 throw new AssertionError("too many left the table");
             if (occupiedCount == 0) groupSize = 0;
-            text.setText(occupiedCount + "/" + seatCount + "|" + groupSize);
+            Platform.runLater(() -> text.setText(occupiedCount + "/" + seatCount + "|" + groupSize));
             for (int index = 0; index < seats.length; index++) {
                 if (occupiedSeats[index] == 1) seats[index] = 0;
             }

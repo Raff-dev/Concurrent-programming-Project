@@ -1,11 +1,11 @@
-package sample;
+package Mechanism;
 
-import Menu.Menu;
+import Menu.Assignment;
 
 import java.util.ArrayList;
 
 import static Menu.Menu.Mode.RUNNING;
-import static sample.Launcher.menu;
+import static Menu.Launcher.menu;
 
 public class Owner extends Thread {
     /*
@@ -31,12 +31,12 @@ public class Owner extends Thread {
     public void run() {
         while (true) {
             if (menu.getMode() == RUNNING) checkQueue();
-            else if (awaitingCustomers.size()>0) {
-                awaitingCustomers.forEach(Thread::interrupt);
-                awaitingCustomers.clear();
-                numWaiting = 0;
-            }
-            awaitingCustomers.forEach(customerGroup -> System.out.println("chuj"));
+//            else if (awaitingCustomers.size()>0) {
+//                awaitingCustomers.forEach(Thread::interrupt);
+//                awaitingCustomers.clear();
+//                numWaiting = 0;
+//            }
+//            awaitingCustomers.forEach(customerGroup -> System.out.println("chuj"));
         }
     }
 
@@ -44,8 +44,8 @@ public class Owner extends Thread {
         ArrayList<Table> tables = pizzeria.getTables();
         ArrayList<CustomerGroup> toRemove = new ArrayList<>();
         boolean updateVisualisation = false;
-
-        synchronized (awaitingCustomers) {
+        try {
+            synchronized (awaitingCustomers) {
 //            int numThreads = java.lang.Thread.activeCount();
 //            if (numThreads != lastNumThreads){
 //                lastNumThreads = numThreads;
@@ -53,33 +53,40 @@ public class Owner extends Thread {
 //            }
 //            if (awaitingCustomers.size() > 0)
 //                System.out.println(awaitingCustomers.size());
-            for (Assignment assignment : new Assignment[]{optimal, possible}) {
-                if (awaitingCustomers.size() == 0) break;
-                for (CustomerGroup group : awaitingCustomers) {
-                    for (Table table : tables) {
-                        if (assignment.canAssign(group, table)) {
-                            group.joinTable(table);
-                            toRemove.add(group);
-                            updateVisualisation = true;
-                            break;
+
+                for (Assignment assignment : new Assignment[]{optimal, possible}) {
+                    if (awaitingCustomers.size() == 0) break;
+                    for (CustomerGroup group : awaitingCustomers) {
+                        for (Table table : tables) {
+                            if (assignment.canAssign(group, table)) {
+                                group.joinTable(table);
+                                toRemove.add(group);
+                                updateVisualisation = true;
+                                break;
+                            }
                         }
                     }
+                    awaitingCustomers.removeAll(toRemove);
+                    numWaiting = awaitingCustomers.size();
                 }
-                awaitingCustomers.removeAll(toRemove);
-                numWaiting = awaitingCustomers.size();
+                if (updateVisualisation) awaitingCustomers.forEach(group ->
+                        group.moveInQueue(awaitingCustomers.indexOf(group)));
             }
-            if (updateVisualisation) awaitingCustomers.forEach(group ->
-                    group.moveInQueue(awaitingCustomers.indexOf(group)));
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            System.out.println("owner");
         }
     }
 
     void queueCustomerGroup(CustomerGroup customerGroup) {
-        synchronized (awaitingCustomers) {
-            awaitingCustomers.add(customerGroup);
-            awaitingCustomers.forEach(group ->
-                    group.moveInQueue(awaitingCustomers.indexOf(group)));
+        try {
+            synchronized (awaitingCustomers) {
+                awaitingCustomers.add(customerGroup);
+                awaitingCustomers.forEach(group ->
+                        group.moveInQueue(awaitingCustomers.indexOf(group)));
 //            System.out.println(customerGroup.identify() + " added to queue");
-
+            }
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            System.out.println("queuing");
         }
     }
 
