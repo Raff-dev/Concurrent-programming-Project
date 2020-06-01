@@ -213,6 +213,5 @@ public class Menu extends StackPane {
     public Mode getMode() {
         return mode;
     }
-
 }
 

@@ -44,23 +44,13 @@ public class Pizzeria extends Pane implements Runnable {
     }
 
     private void generateCustomer() {
-//        System.out.println("generating customer");
-//            Mode mode = menu.getMode();
-//            if (mode == START || mode == PAUSE) return;
-        try{
-
-
-        int numWaiting = owner.getNumWaiting();
-        if (numWaiting < Settings.maxNumWaiting) {
-            customerGroupCounter++;
-            int customersCount = getRandom().nextInt(3) + 1;
-            CustomerGroup customerGroup = new CustomerGroup(this, owner, customersCount, customerGroupCounter);
-            customerGroup.start();
-        }
-//        else System.out.println("Max number of waiting customers reached: " + numWaiting);
-        } catch (NullPointerException|IndexOutOfBoundsException e) {
-            System.out.println("pizzer");
-        }
+            int numWaiting = owner.getNumWaiting();
+            if (numWaiting < Settings.maxNumWaiting) {
+                customerGroupCounter++;
+                int customersCount = getRandom().nextInt(3) + 1;
+                CustomerGroup customerGroup = new CustomerGroup(this, owner, customersCount, customerGroupCounter);
+                customerGroup.start();
+            }
     }
 
     public ArrayList<Table> getTables() {

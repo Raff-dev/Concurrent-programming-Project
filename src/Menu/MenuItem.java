@@ -14,7 +14,6 @@ import static javafx.scene.paint.Color.WHITE;
 import static Mechanism.Settings.*;
 
 public class MenuItem extends StackPane {
-    private final long initialValue;
     private ButtonName buttonName;
     private String name;
     private Task primaryTask;
@@ -27,7 +26,6 @@ public class MenuItem extends StackPane {
         this.buttonName = name;
         this.primaryTask = task;
         this.secondaryTask = task;
-        this.initialValue = 0;
         this.name = String.valueOf(name).replace("_", " ");
         this.text.setText(this.name);
         setDefault();
@@ -39,7 +37,6 @@ public class MenuItem extends StackPane {
         this.buttonName = name;
         this.primaryTask = primaryTask;
         this.secondaryTask = secondaryTask;
-        this.initialValue = initialValue;
         this.isDual = true;
         this.name = String.valueOf(name).replace("_", " ");
         updateValueText(initialValue);

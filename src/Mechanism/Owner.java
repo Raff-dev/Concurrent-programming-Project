@@ -31,12 +31,6 @@ public class Owner extends Thread {
     public void run() {
         while (true) {
             if (menu.getMode() == RUNNING) checkQueue();
-//            else if (awaitingCustomers.size()>0) {
-//                awaitingCustomers.forEach(Thread::interrupt);
-//                awaitingCustomers.clear();
-//                numWaiting = 0;
-//            }
-//            awaitingCustomers.forEach(customerGroup -> System.out.println("chuj"));
         }
     }
 
@@ -46,14 +40,6 @@ public class Owner extends Thread {
         boolean updateVisualisation = false;
         try {
             synchronized (awaitingCustomers) {
-//            int numThreads = java.lang.Thread.activeCount();
-//            if (numThreads != lastNumThreads){
-//                lastNumThreads = numThreads;
-////                System.out.println("Active threads count: " + numThreads);
-//            }
-//            if (awaitingCustomers.size() > 0)
-//                System.out.println(awaitingCustomers.size());
-
                 for (Assignment assignment : new Assignment[]{optimal, possible}) {
                     if (awaitingCustomers.size() == 0) break;
                     for (CustomerGroup group : awaitingCustomers) {

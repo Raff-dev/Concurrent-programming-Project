@@ -112,10 +112,6 @@ public class Table extends StackPane {
         return tableSpacing * (1 + seatCount) * scale;
     }
 
-    void onScaleChange() {
-
-    }
-
     float getSeatX(int index) {
         float offset = 0;
         if (index == 0) offset = tableSize / 2 - customerSize / 2;
