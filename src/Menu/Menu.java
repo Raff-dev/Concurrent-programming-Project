@@ -40,7 +40,7 @@ public class Menu extends StackPane {
     private ArrayList<ButtonName> startButtons
             = new ArrayList<>(Arrays.asList(Start, Tables, Customers, Quit));
     private ArrayList<ButtonName> menuButtons
-            = new ArrayList<>(Arrays.asList(Resume, Tables, Customers, Quit));
+            = new ArrayList<>(Arrays.asList(Resume,Tables, Customers, Quit));
 
     public enum Mode {START, PAUSE, RUNNING}
 

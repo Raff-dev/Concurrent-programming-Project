@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import Mechanism.Pizzeria;
 
-
 import static Mechanism.Settings.*;
 
 public class Launcher extends Application {
@@ -16,7 +15,6 @@ public class Launcher extends Application {
     private static final Pane window = new Pane(pizzeria, menu);
     public static final Scene scene = new Scene(window, WIDTH, HEIGHT);
     public static final InputHandler inputHandler = new InputHandler();
-
 
     @Override
     public void start(Stage stage) {

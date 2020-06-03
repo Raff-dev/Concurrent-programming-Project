@@ -21,7 +21,6 @@ public class Pizzeria extends Pane implements Runnable {
         this.tablesSeatCounts = tablesSeatCounts;
     }
 
-
     @Override
     public void run() {
         generateTables();

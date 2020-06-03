@@ -24,9 +24,9 @@ public class Settings extends Pane {
     public static float tableSpacing = 100;
     public static int queueSpacing = 100;
 
-    public static int customerSpawnTimeVariation = (int) (20 * timeScale);
-    public static long customerSpawnTime = (long) (30 * timeScale);
-    public static long eatingTime = (long) (500 * timeScale);
+    public static int customerSpawnTimeVariation = (int) (200 * timeScale);
+    public static long customerSpawnTime = (long) (300 * timeScale);
+    public static long eatingTime = (long) (1000 * timeScale);
     public static int maxNumWaiting = 5;
 
     private static final Random random = new Random();
