@@ -8,20 +8,12 @@ import static Menu.Menu.Mode.RUNNING;
 import static Menu.Launcher.menu;
 
 public class Owner extends Thread {
-    /*
-    Owner is a program component which is responsible for optimization of table assignment
-        owner as a fair man assigns tables in a following manner:
-        - customers, who joined queue first, have a higher priority
-        - first of all, the owner looks for a best fit
-        - if no optimal fit was found, search for any possible assignment at the moment begins
-     */
     private Pizzeria pizzeria;
     private final ArrayList<CustomerGroup> awaitingCustomers = new ArrayList<>();
     private volatile int numWaiting = 0;
 
     private Assignment optimal = (g, t) -> t.isOptimal(g.getNumCustomers());
     private Assignment possible = (g, t) -> t.canHaveASeat(g.getNumCustomers());
-
 
     public Owner(Pizzeria pizzeria) {
         this.pizzeria = pizzeria;

@@ -51,7 +51,7 @@ public class Table extends StackPane {
             if (seatCount - occupiedCount < customersCount)
                 throw new AssertionError("too many joined the table");
             occupiedCount += customersCount;
-            ///////////////////////
+
             Platform.runLater(() -> text.setText(occupiedCount + "/" + seatCount + "|" + groupSize));
             int[] emptySeats = new int[]{0, 0, 0, 0};
             for (int index = 0; index < seats.length; index++) {

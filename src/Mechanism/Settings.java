@@ -69,9 +69,9 @@ public class Settings extends Pane {
             Settings.seatsSetting[index] += change;
             MenuItem menuItem;
             if (index == 0) menuItem = getButton(ButtonName.One_Seat);
-            else if (index == 1) menuItem = getButton(ButtonName.Two_Seat);
-            else if (index == 2) menuItem = getButton(ButtonName.Three_Seat);
-            else menuItem = getButton(ButtonName.Four_Seat);
+            else if (index == 1) menuItem = getButton(ButtonName.Two_Seats);
+            else if (index == 2) menuItem = getButton(ButtonName.Three_Seats);
+            else menuItem = getButton(ButtonName.Four_Seats);
             menuItem.updateValueText(Settings.seatsSetting[index]);
         }
     }

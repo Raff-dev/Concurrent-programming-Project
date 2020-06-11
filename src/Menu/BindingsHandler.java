@@ -11,7 +11,7 @@ public class BindingsHandler {
         buttons.add(new MenuItem(Resume, () -> menu.resume()));
         buttons.add(new MenuItem(Start, () -> menu.startWorking()));
         buttons.add(new MenuItem(Tables, () -> menu.extendWith(
-                menu.getButtons(One_Seat, Two_Seat, Three_Seat, Four_Seat))));
+                menu.getButtons(One_Seat, Two_Seats, Three_Seats, Four_Seats))));
         buttons.add(new MenuItem(Customers, () -> menu.extendWith(
                 menu.getButtons(Spawn_Time, Spawn_Time_Variation, Eating_Time, Max_Queue_Size))));
         buttons.add(new MenuItem(Quit, () -> menu.quit()));
@@ -19,13 +19,13 @@ public class BindingsHandler {
         buttons.add(new MenuItem(One_Seat, Settings.getSeatsSetting()[0],
                 () -> Settings.setSeatsSetting(0, -1),
                 () -> Settings.setSeatsSetting(0, 1)));
-        buttons.add(new MenuItem(Two_Seat, Settings.getSeatsSetting()[1],
+        buttons.add(new MenuItem(Two_Seats, Settings.getSeatsSetting()[1],
                 () -> Settings.setSeatsSetting(1, -1),
                 () -> Settings.setSeatsSetting(1, 1)));
-        buttons.add(new MenuItem(Three_Seat, Settings.getSeatsSetting()[2],
+        buttons.add(new MenuItem(Three_Seats, Settings.getSeatsSetting()[2],
                 () -> Settings.setSeatsSetting(2, -1),
                 () -> Settings.setSeatsSetting(2, 1)));
-        buttons.add(new MenuItem(Four_Seat, Settings.getSeatsSetting()[3],
+        buttons.add(new MenuItem(Four_Seats, Settings.getSeatsSetting()[3],
                 () -> Settings.setSeatsSetting(3, -1),
                 () -> Settings.setSeatsSetting(3, 1)));
 

@@ -1,10 +1,7 @@
 package Menu;
 
 import javafx.animation.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -39,14 +36,14 @@ public class Menu extends StackPane {
 
     private ArrayList<ButtonName> startButtons
             = new ArrayList<>(Arrays.asList(Start, Tables, Customers, Quit));
-    private ArrayList<ButtonName> menuButtons
-            = new ArrayList<>(Arrays.asList(Resume,Tables, Customers, Quit));
+    private ArrayList<ButtonName> pauseButtons
+            = new ArrayList<>(Arrays.asList(Resume, Customers, Quit));
 
     public enum Mode {START, PAUSE, RUNNING}
 
     public enum ButtonName {
         Start, Resume, Quit, Tables, Customers,
-        One_Seat, Two_Seat, Three_Seat, Four_Seat,
+        One_Seat, Two_Seats, Three_Seats, Four_Seats,
         Spawn_Time, Spawn_Time_Variation, Eating_Time, Max_Queue_Size
     }
 
@@ -54,7 +51,6 @@ public class Menu extends StackPane {
         setProperties();
         BindingsHandler.bind();
         getChildren().addAll(bg, floatiesContainer, primaryItems, secondaryItems);
-//        pizzeria.addTask("Floaties", 1, () -> goFloaty(makeFloatie(), floatiesContainer), false);
     }
 
     public void init() {
@@ -92,9 +88,7 @@ public class Menu extends StackPane {
     }
 
     void closeExtension() {
-        if (secondaryButtons.size() == 0) {
-            return;
-        }
+        if (secondaryButtons.size() == 0) return;
         moveButtons(0, primaryButtons, () -> setActiveButtons(primaryButtons));
         moveButtons(WIDTH, secondaryButtons, () -> {
             secondaryButtons.forEach(b -> b.setDefault());
@@ -135,10 +129,11 @@ public class Menu extends StackPane {
         ft.setOnFinished((event) -> {
             primaryItems.getChildren().clear();
             primaryButtons.clear();
-            primaryButtons.addAll(getButtons(menuButtons));
-            primaryButtons.forEach(b -> b.setTranslateX(0));
+            primaryButtons.addAll(getButtons(pauseButtons));
+            primaryButtons.forEach(b -> {
+                b.setTranslateX(0);
+            });
             primaryItems.getChildren().addAll(primaryButtons);
-            closeExtension();
         });
         ft.play();
         new Thread(pizzeria).start();
@@ -190,8 +185,8 @@ public class Menu extends StackPane {
             tr.setNode(items.get(i));
             tr.setDelay(new Duration(100 + i * 100));
             tr.play();
+            if (task != null && i == items.size() - 1) tr.setOnFinished((e) -> task.execute());
         }
-        if (task != null) task.execute();
     }
 
     public List<MenuItem> getButtons(ButtonName... names) {

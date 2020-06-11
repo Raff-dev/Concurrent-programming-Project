@@ -79,7 +79,7 @@ public class MenuItem extends StackPane {
     }
 
     public void updateValueText(long value) {
-        this.text.setText(this.buttonName + ": " + value);
+        this.text.setText(this.name + ": " + value);
     }
 
     boolean isDual() {
